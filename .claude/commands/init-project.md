@@ -6,31 +6,25 @@ You are running the **init-project** skill. Gather project details interactively
 
 ## Pre-flight — Read current state
 
-Before asking the user anything, read these files so you know what already exists and what the current values are. This prevents Edit failures from mismatched `old_string`:
+Before asking the user anything, gather current file contents and repo metadata. Use the dedicated tools (Read, Bash) — never use `cat` when Read is available.
 
-```bash
-cat .devcontainer/devcontainer.json
-```
-```bash
-head -3 README.md
-```
-```bash
-head -5 CLAUDE.md
-```
-```bash
-test -f init.sh && echo "init.sh present" || echo "init.sh absent"
-```
-```bash
-git remote get-url origin 2>/dev/null || echo "no remote"
-```
+1. Use the **Read tool** on `.devcontainer/devcontainer.json` — note the exact current values of `"name"`, `"image"`, `"forwardPorts"`, `"extensions"`, and the `"features"` block. You will need these as `old_string` in every Edit call.
+2. Use the **Read tool** on `README.md` (first 5 lines sufficient).
+3. Use the **Read tool** on `CLAUDE.md` (first 10 lines sufficient).
+4. Run via Bash: `test -f init.sh && echo "present" || echo "absent"`
+5. Run via Bash: `git remote get-url origin 2>/dev/null || echo "no-remote"`
 
-Note what the current `"name"`, `"image"`, `"forwardPorts"`, and `"extensions"` values are in devcontainer.json. You will need these exact strings later.
+**From the remote URL, attempt to infer the GitHub owner:**
+- SSH format: `git@github.com:OWNER/REPO.git` → owner is `OWNER`
+- HTTPS format: `https://github.com/OWNER/REPO` → owner is `OWNER`
+- If inferred successfully, pre-fill the GitHub owner field and **skip Question 2** in Step 1 (do not ask for something you already know). Tell the user: "Detected GitHub owner: OWNER — using that automatically."
+- If the remote is absent or not a github.com URL, ask Question 2 as normal.
 
 ---
 
 ## Step 1 — Gather project details (Round 1)
 
-Use **AskUserQuestion** with exactly these 4 questions in one call:
+Use **AskUserQuestion** with up to 4 questions in one call. If GitHub owner was inferred in Pre-flight, omit Question 2 and ask only 3 questions.
 
 ```
 Question 1:
