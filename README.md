@@ -31,15 +31,28 @@ Or open directly in Codespaces:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/WhoMe192/ralph-wiggum-experiment)
 
-### Authenticate Claude Code
+### Authenticate (required on first use)
 
-After the container is ready, authenticate:
+Each time you start a fresh container you need to authenticate both tools.
+A reminder is printed in the terminal automatically on startup.
+
+**GitHub CLI:**
+
+```bash
+gh auth login
+```
+
+Follow the prompts to authenticate via browser.
+
+**Claude Code:**
 
 ```bash
 claude
 ```
 
-Follow the prompts to log in with your Anthropic account.
+Follow the prompts to log in with your Anthropic account. Once authenticated,
+subsequent `claude` commands work without re-logging in for the life of the
+container.
 
 ## Usage
 

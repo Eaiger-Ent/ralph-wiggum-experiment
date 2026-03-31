@@ -5,6 +5,7 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "echo '\n\u26a0\ufe0f  Remember to authenticate before use:\n   gh auth login        (GitHub CLI)\n   claude               (Claude Code — follow the login prompt)\n'",
   "forwardPorts": [3000],
   "customizations": {
     "vscode": {
