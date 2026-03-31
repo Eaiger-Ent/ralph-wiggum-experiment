@@ -234,7 +234,44 @@ See [CLAUDE.md](CLAUDE.md) for project conventions and AI-assisted development g
 
 ## Step 6 — Update `CLAUDE.md`
 
-**Read the file first**. If it contains `[Your Project Name]`, replace it with `<PROJECT_NAME>`. If it already contains a project name (from a prior run), replace that name with `<PROJECT_NAME>`. Do not change anything else.
+**Read the file first**. Make the following targeted Edit calls using the exact current text as `old_string`:
+
+**6a. Project name** — Replace `[Your Project Name]` (or the current name if re-running) with `<PROJECT_NAME>`.
+
+**6b. Overview section** — Replace:
+```
+<!-- What does this project do? What problem does it solve? -->
+```
+with the project description:
+```
+<PROJECT_DESC>
+```
+
+**6c. Tech Stack section** — Replace:
+```
+<!-- e.g. Node.js 22, TypeScript, React, PostgreSQL -->
+```
+with the chosen stack. Use this map:
+
+| Stack chosen | Tech Stack content |
+|---|---|
+| Node.js 22 | `Node.js 22, JavaScript / TypeScript` |
+| Python 3.12 | `Python 3.12` |
+| Go 1.22 | `Go 1.22` |
+| Rust | `Rust` |
+| Other / custom | the image name the user provided |
+
+**6d. Development commands** — Replace the placeholder build/test/run commands with stack-appropriate examples:
+
+| Stack | Build | Test | Run |
+|---|---|---|---|
+| Node.js 22 | `npm run build` | `npm test` | `npm start` |
+| Python 3.12 | `pip install -r requirements.txt` | `pytest` | `python main.py` |
+| Go 1.22 | `go build ./...` | `go test ./...` | `go run main.go` |
+| Rust | `cargo build` | `cargo test` | `cargo run` |
+| Other | leave as `# add build command` | leave as `# add test command` | leave as `# add run command` |
+
+Use separate Edit calls for each replacement so a failure in one does not block the others.
 
 ---
 
