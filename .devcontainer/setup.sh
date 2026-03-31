@@ -26,7 +26,9 @@ if [ -L "$CLAUDE_JSON" ]; then
 else
   # Back up the file created during setup, seed the volume copy if not already there
   [ -f "$CLAUDE_JSON" ] && mv "$CLAUDE_JSON" "${CLAUDE_JSON}.orig"
-  [ ! -f "$CLAUDE_JSON_REAL" ] && [ -f "${CLAUDE_JSON}.orig" ] && cp "${CLAUDE_JSON}.orig" "$CLAUDE_JSON_REAL"
+  if [ ! -f "$CLAUDE_JSON_REAL" ]; then
+    cp "$(dirname "$0")/claude.json.baseline" "$CLAUDE_JSON_REAL"
+  fi
   ln -s "$CLAUDE_JSON_REAL" "$CLAUDE_JSON"
   echo "  ✓ Symlinked $CLAUDE_JSON -> $CLAUDE_JSON_REAL"
 fi

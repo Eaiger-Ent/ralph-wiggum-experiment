@@ -1,0 +1,21 @@
+{
+  "installMethod": "native",
+  "autoUpdates": false,
+  "autoUpdatesProtectedForNative": true,
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "2.1.87",
+  "tipsHistory": {
+    "new-user-warmup": 1,
+    "plan-mode-for-complex-tasks": 1
+  },
+  "opusProMigrationComplete": true,
+  "sonnet1m45MigrationComplete": true,
+  "penguinModeOrgEnabled": true,
+  "shiftEnterKeyBindingInstalled": true,
+  "officialMarketplaceAutoInstallAttempted": true,
+  "officialMarketplaceAutoInstalled": true,
+  "hasIdeOnboardingBeenShown": {
+    "vscode": true
+  },
+  "migrationVersion": 11
+}
