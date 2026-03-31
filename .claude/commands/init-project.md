@@ -308,11 +308,32 @@ test -f init.sh && rm init.sh && echo "Removed init.sh" || echo "init.sh not pre
 
 ---
 
+## Step 8b — Harden `setup.sh` against plugin install failures
+
+The `postCreateCommand` runs `setup.sh` which installs Claude Code and the ralph-loop plugin. If the plugin install step fails (auth not yet configured, network error, etc.) and the script uses `set -e`, the entire devcontainer startup fails.
+
+**Read `.devcontainer/setup.sh`**. Check if the plugin install line is already wrapped with `|| ...` or `|| true`. If it is **not** already guarded, use Edit to replace the bare command with a non-fatal version:
+
+old_string:
+```
+claude --print /plugin install ralph-loop@claude-plugins-official
+```
+
+new_string:
+```
+claude --print /plugin install ralph-loop@claude-plugins-official \
+  || echo "Warning: ralph-loop plugin install failed — run manually: claude /plugin install ralph-loop@claude-plugins-official"
+```
+
+If the line is already guarded, skip this edit.
+
+---
+
 ## Step 9 — Commit
 
 Stage all changed files:
 ```bash
-git add .devcontainer/devcontainer.json README.md CLAUDE.md
+git add .devcontainer/devcontainer.json .devcontainer/setup.sh README.md CLAUDE.md
 git add -u
 ```
 
