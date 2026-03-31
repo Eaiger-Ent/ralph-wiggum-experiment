@@ -2,6 +2,21 @@
 
 You are running the **init-project** skill. Gather project details interactively, update repository files to configure the devcontainer and GitHub settings, then commit so the devcontainer can start without error.
 
+**Steps at a glance:**
+1. Pre-flight — read current file state, check dirty tree, infer GitHub owner from remote
+2. Questions round 1 — project name (kebab-case), GitHub owner, description, tech stack
+3. Questions round 2 — ports, VS Code extensions, repo visibility, set GH description?
+4. Map answers → devcontainer image, node feature flag, extension IDs
+5. Edit `devcontainer.json` — name, image, node feature (non-Node stacks), ports, extensions; validate JSONC
+6. Write `README.md` — project name, description, Codespaces badge
+7. Edit `CLAUDE.md` — name, overview, tech stack, build/test/run commands
+7b. Extend `.gitignore` — stack-specific entries, create if absent
+8. Apply GitHub settings — `gh repo edit` description + visibility (always with `--accept-visibility-change-consequences`)
+8b. Harden `setup.sh` — make plugin install non-fatal if not already guarded
+9. Remove `init.sh` if present
+10. Commit all changes with heredoc message
+11. Report to user
+
 ---
 
 ## Pre-flight — Read current state
