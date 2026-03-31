@@ -29,12 +29,12 @@ Use **AskUserQuestion** with up to 4 questions in one call. If GitHub owner was 
 
 ```
 Question 1:
-  question: "What is your project name? (becomes the repo slug and devcontainer name)"
+  question: "What is your project name? Use kebab-case (e.g. my-cool-app) — appears in the devcontainer name and Codespaces URL."
   header: "Project name"
   multiSelect: false
   options:
-    - label: "my-project"       description: "Example — type your own name via Other"
-    - label: "my-api"           description: "Example — type your own name via Other"
+    - label: "my-project"       description: "Example — type your kebab-case name via Other"
+    - label: "my-api"           description: "Example — type your kebab-case name via Other"
 
 Question 2:
   question: "What is your GitHub username or organisation?"
@@ -63,6 +63,8 @@ Question 4:
     - label: "Other / custom"   description: "Rust, base Ubuntu, or a custom image"
 ```
 
+**After receiving the project name:** if it contains spaces or characters other than letters, digits, hyphens, or underscores, suggest a kebab-case version (e.g. "My Cool App" → "my-cool-app") and confirm with the user before continuing. Use this normalised name throughout.
+
 If the user chose **"Other / custom"** for tech stack, make a second AskUserQuestion call:
 
 ```
@@ -84,7 +86,7 @@ Use **AskUserQuestion** with exactly these 4 questions in one call:
 
 ```
 Question 1:
-  question: "Which ports should the devcontainer forward? (select all that apply)"
+  question: "Which ports should the devcontainer forward? Select all that apply, or choose Other and type 'none' if no ports are needed."
   header: "Ports"
   multiSelect: true
   options:
