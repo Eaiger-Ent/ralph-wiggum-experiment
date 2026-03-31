@@ -160,20 +160,14 @@ Apply each change as a separate Edit call:
 
 1. Replace the current `"name": "<CURRENT_NAME>"` line with `"name": "<PROJECT_NAME> Dev Environment"`
 2. Replace the current `"image": "<CURRENT_IMAGE>"` line with `"image": "<MAPPED_IMAGE>"`
-3. **If a non-Node stack was chosen**, replace the current `"features"` block:
-   ```json
-   "features": {
-       "ghcr.io/devcontainers/features/github-cli:1": {}
-     },
-   ```
-   with:
+3. **If a non-Node stack was chosen AND `node:1` is not already in the features block** (check the pre-flight read — skip this edit if `"ghcr.io/devcontainers/features/node:1"` is already present), replace the current `"features"` block — use the **exact current text** from the pre-flight read as `old_string`, adding the node entry:
    ```json
    "features": {
        "ghcr.io/devcontainers/features/github-cli:1": {},
        "ghcr.io/devcontainers/features/node:1": {}
      },
    ```
-   (Use the exact whitespace/indentation from the current file.)
+   (Match the exact whitespace/indentation of the current file.)
 4. Replace the current `"forwardPorts": <CURRENT_VALUE>` with `"forwardPorts": [<comma-separated port integers>]`
    - If no ports selected, use `[]`
 5. Replace the current `"extensions": <CURRENT_VALUE>` with `"extensions": [<quoted extension IDs>]`
@@ -254,13 +248,17 @@ Check if the gh CLI is authenticated: run `gh auth status 2>&1` and inspect the 
   ```bash
   gh repo edit --description "<PROJECT_DESC>"
   ```
-- For visibility (run as separate command, capture exit code):
+- For visibility — **always include `--accept-visibility-change-consequences`**, it is required by `gh` whenever `--visibility` is used:
   ```bash
-  gh repo edit --visibility public   # or private
+  gh repo edit --visibility public --accept-visibility-change-consequences
+  # or
+  gh repo edit --visibility private --accept-visibility-change-consequences
   ```
-  Note: changing to private may require `--accept-visibility-change-consequences`. If the command fails, tell the user to run it manually with that flag.
 
-**If not authenticated or no remote:** Skip gh commands and tell the user what to run manually.
+**If not authenticated or no remote:** Skip gh commands and tell the user what to run manually:
+```
+gh repo edit --description "..." --visibility public --accept-visibility-change-consequences
+```
 
 ---
 
