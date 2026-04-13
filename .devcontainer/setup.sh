@@ -33,4 +33,13 @@ else
   echo "  ✓ Symlinked $CLAUDE_JSON -> $CLAUDE_JSON_REAL"
 fi
 
+echo "==> Seeding Claude user settings..."
+CLAUDE_USER_SETTINGS=/home/node/.claude/user-settings.json
+if [ ! -f "$CLAUDE_USER_SETTINGS" ]; then
+  cp "$(dirname "$0")/claude-user-settings.json" "$CLAUDE_USER_SETTINGS"
+  echo "  ✓ User settings seeded at $CLAUDE_USER_SETTINGS"
+else
+  echo "  ✓ User settings already present, skipping"
+fi
+
 echo "==> Setup complete. Run 'claude /ralph-loop:help' to get started."

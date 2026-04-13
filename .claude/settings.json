@@ -1,6 +1,11 @@
 {
-  "enabledPlugins": {
-    "ralph-loop@claude-plugins-official": true
+  "permissions": {
+    "allow": [
+      "Edit(.claude/skills/**)",
+      "Write(.claude/skills/**)",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/Users/nathan/git/ralph-wiggum-experiment/.claude/settings.json'\\)\\); print\\('✓ Valid JSON'\\)\")",
+      "Bash(grep -E 'sh$')"
+    ]
   },
   "hooks": {
     "PreToolUse": [
@@ -9,10 +14,36 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'ralph-loop'; then echo 'ERROR: Do not edit ralph-loop config/state files without explicit user instruction.' >&2; exit 1; fi"
+            "command": "INPUT=$(echo \"$CLAUDE_TOOL_INPUT\"); if echo \"$INPUT\" | grep -qE '(ralph-loop/|loop-state\\.md|PROMPT[0-9]*\\.md)'; then echo 'ERROR: Do not edit ralph-loop config, state files, or PROMPT files without explicit user instruction.' >&2; exit 1; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -q '\"git commit'; then MSG=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('command',''); import re; m=re.search(r'-m [\\\"\\x27]([^\\\"\\x27]+)', cmd); print(m.group(1) if m else '')\" 2>/dev/null || echo ''); if [ -n \"$MSG\" ] && ! echo \"$MSG\" | grep -qE '^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert)(\\([^)]+\\))?: .+'; then echo \"ERROR: Commit message must follow Conventional Commits: <type>(<scope>): <description>\" >&2; echo \"Types: feat fix docs style refactor test chore build ci perf revert\" >&2; exit 1; fi; fi"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/workspaces/ralph-wiggum-experiment/.claude/ralph-loop/hooks/stop-hook.sh"
           }
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "ralph-loop@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true
   }
 }

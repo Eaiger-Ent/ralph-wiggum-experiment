@@ -41,5 +41,11 @@ else
   echo "          git config --global user.email \"you@example.com\""
 fi
 
+# OpenTofu (optional — only report if installed)
+if command -v tofu &>/dev/null; then
+  TOFU_VERSION=$(tofu version 2>/dev/null | head -1 || echo "unknown")
+  echo "  ✓ OpenTofu — $TOFU_VERSION"
+fi
+
 echo "══════════════════════════════════════════════════════"
 echo ""
