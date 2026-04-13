@@ -4,7 +4,12 @@
       "Edit(.claude/skills/**)",
       "Write(.claude/skills/**)",
       "Bash(python3 -c \"import json; json.load\\(open\\('/Users/nathan/git/ralph-wiggum-experiment/.claude/settings.json'\\)\\); print\\('✓ Valid JSON'\\)\")",
-      "Bash(grep -E 'sh$')"
+      "Bash(grep -E 'sh$')",
+      "Bash(python3 -m json.tool)"
+    ],
+    "additionalDirectories": [
+      "/Users/nathan/git/meeting-to-trello/.claude/skills/corpus-sync",
+      "/Users/nathan/git/meeting-to-trello/.claude/skills/ralph-prompt-create"
     ]
   },
   "hooks": {
