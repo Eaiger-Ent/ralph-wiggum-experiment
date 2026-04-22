@@ -60,44 +60,48 @@ This repo uses a ralph-loop automation mechanism.
 
 ## Skills
 
-This template ships skills under `.claude/skills/`. Categories:
+All skills are provided by the [ee-skills marketplace](https://github.com/Eaiger-Ent/ee-skills)
+via Claude Code plugins. There are no local skill overrides in `.claude/skills/`.
 
-- **ADR**: `adr-new`, `adr-check`, `adr-review`, `adr-approve`, `adr-refine`, `adr-status`, `adr-consistency`
-- **Ralph-loop methodology**: `ralph-prompt-create`, `ralph-prompt-review`, `ralph-prompt-auto`, `ralph-pipeline`, `ralph-pipeline-complete`, `ralph-parallel-subagents`, `ralph-guardrails`, `ralph-preflight`, `phase-sync`, `phase-batch-plan`
-- **Corpus** (opt-in, requires `uv` + `duckdb`): `corpus-sync`, `corpus-query`
-- **GitHub issue workflow**: `issue-readiness-check`, `issue-refine`
-- **CI**: `fix-ci` (GCP-only — see header banner)
-- **Skill / docs hygiene**: `skill-review`, `skill-improver`, `settings-hygiene`, `readme-check`
-- **BDD**: `gherkin`, `gherkin-scenarios`, `gherkin-review`
-- **Architecture**: `likec4`, `likec4-model`, `likec4-check`
-- **Devcontainer**: `devcontainer-check` (gcloud/tofu conditional on this CLAUDE.md tech-stack)
-- **Commit**: `smart-commit`
+To update skills to latest: `claude plugin update --scope project`
+To add a new ee-skill: `claude plugin install --scope project <plugin-name>`
+To contribute a local improvement back: `/submit-amendment <skill-name>`
 
-Calibration / standards docs: `docs/skill-design-standards.md`, `docs/skill-calibration-manifest.md`, `docs/skill-output-templates.md`.
+### Installed ee-skills plugins
+
+| Plugin | Skills provided | Category |
+| --- | --- | --- |
+| `ralph-loop` | `/ralph-loop`, `/cancel-ralph`, `/ralph-help` | Productivity |
+| `ralph-pipeline` | `ralph-pipeline`, `ralph-guardrails`, `ralph-preflight`, `ralph-prompt-create`, `ralph-prompt-review`, `ralph-prompt-auto`, `ralph-parallel-subagents`, `phase-sync`, `phase-batch-plan` | Development |
+| `adr-toolkit` | `adr-new`, `adr-check`, `adr-review`, `adr-approve`, `adr-refine`, `adr-status`, `adr-consistency` | Development |
+| `skill-quality` | `skill-quality`, `skill-review`, `skill-improver` | Workflow |
+| `issue-workflow` | `issue-readiness-check`, `issue-refine` | Workflow |
+| `corpus` | `corpus-sync`, `corpus-query` | Workflow |
+| `devcontainer-check` | `devcontainer-check` | Productivity |
+| `fix-ci` | `fix-ci` | Productivity (GCP Cloud Build only) |
+| `gherkin` | `gherkin` | Development |
+| `likec4` | `likec4` | Development |
+| `readme-check` | `readme-check` | Productivity |
+| `settings-hygiene` | `settings-hygiene` | Workflow |
+| `smart-commit` | `smart-commit` | Productivity |
+| `ee-skills-manage` | `sync-skills`, `replace-with-marketplace`, `update-skills` | Workflow |
+| `ee-skills-contribute` | `/submit-amendment` | Workflow |
 
 ### Optional dependencies
 
 - `uv` + Python 3.13 + `duckdb` — required by `corpus-sync` / `corpus-query` (see `pyproject.toml`)
-- `node` — required by `scripts/pipeline-deps.js` used by `ralph-pipeline`
 - `gh` — required by `issue-readiness-check`, `issue-refine`, `ralph-prompt-auto`, `phase-batch-plan`
 
 ### Skills requiring project customisation
 
-A few skills use placeholder paths (`<source-dir>`, `<test-dir>`) or require project-specific
-configuration. Populate `## Tech Stack` below so the skills can infer the rest.
-
 - `ralph-prompt-auto` — reads this file's `## Tech Stack` section to classify phase type
-  and picks source directories via a manifest-file scan
-- `ralph-pipeline-complete` — if using GCP Cloud Build for UAT, set `CLAUDE_GCP_PROJECT`,
-  `CLAUDE_GCP_REGION`, `CLAUDE_UAT_TRIGGER`, `CLAUDE_UAT_SECRET`; otherwise the UAT step
-  skips gracefully
 - `fix-ci` — GCP Cloud Build only. Requires `CLAUDE_GCP_PROJECT` and `CLAUDE_GCP_REGION`
 
 ### GCP configuration (only if this project deploys to GCP)
 
 | Env var | Used by | Required |
 | --- | --- | --- |
-| `CLAUDE_GCP_PROJECT` | `fix-ci`, `ralph-pipeline-complete` | if invoking either skill |
-| `CLAUDE_GCP_REGION` | `fix-ci`, `ralph-pipeline-complete` | if invoking either skill |
-| `CLAUDE_UAT_TRIGGER` | `ralph-pipeline-complete` UAT step | only for UAT flow |
-| `CLAUDE_UAT_SECRET` | `ralph-pipeline-complete` secret lookup | only for UAT flow |
+| `CLAUDE_GCP_PROJECT` | `fix-ci`, `ralph-pipeline` | if invoking either skill |
+| `CLAUDE_GCP_REGION` | `fix-ci`, `ralph-pipeline` | if invoking either skill |
+| `CLAUDE_UAT_TRIGGER` | `ralph-pipeline` UAT step | only for UAT flow |
+| `CLAUDE_UAT_SECRET` | `ralph-pipeline` secret lookup | only for UAT flow |

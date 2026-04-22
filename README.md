@@ -86,13 +86,13 @@ The skill asks a few questions and then:
 Once authenticated, start a loop:
 
 ```bash
-claude /ralph-loop:ralph-loop "<your prompt>" \
+claude /ralph-loop "<your prompt>" \
   --max-iterations 10 \
   --completion-promise "DONE"
 ```
 
-Other commands: `/ralph-loop:cancel-ralph` (stop a loop),
-`/ralph-loop:help` (usage info).
+Other commands: `/cancel-ralph` (stop a loop),
+`/ralph-help` (usage info).
 
 ## Customising the Tech Stack
 
