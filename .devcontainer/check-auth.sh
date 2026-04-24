@@ -7,6 +7,8 @@
 # container creation), so Keychain updates take effect on restart rather
 # than requiring a rebuild.
 
+export PATH="$HOME/.local/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ENV_FILE="$SCRIPT_DIR/.env"
 PROFILE_HOOK="/etc/profile.d/devcontainer-env.sh"

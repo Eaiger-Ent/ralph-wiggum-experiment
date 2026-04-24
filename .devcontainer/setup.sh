@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-echo "==> Installing Claude Code CLI..."
-npm install -g @anthropic-ai/claude-code
+echo "==> Installing Claude Code (native installer)..."
+curl -fsSL https://claude.ai/install.sh | bash
+export PATH="$HOME/.local/bin:$PATH"
 
 echo "==> Adding official Claude plugins marketplace..."
 claude --print /plugin marketplace add anthropics/claude-plugins-official \
@@ -34,10 +35,6 @@ for plugin in "${EE_PLUGINS[@]}"; do
     && echo "  ✓ ${plugin}" \
     || echo "  ✗ ${plugin} failed — run manually: claude plugin install --scope project ${plugin}@ee-skills"
 done
-
-echo "==> Running claude install..."
-claude install \
-  || echo "Warning: claude install failed — run manually: claude install"
 
 echo "==> Symlinking ~/.claude.json into the persistent volume..."
 CLAUDE_JSON_REAL=/home/node/.claude/claude-code/claude.json
