@@ -55,6 +55,9 @@ container. If both are stored, the OAuth token takes priority.
 > **Note:** If neither credential is found, the container will fail to start and
 > print instructions to add one.
 
+See [SECRETS.md](SECRETS.md) for the full list of supported secrets, how to add
+project-specific overrides, and how to update or verify stored values.
+
 ### 4. Authenticate GitHub CLI (optional)
 
 ```bash
@@ -123,3 +126,4 @@ edit `.devcontainer/devcontainer.json`:
 - [Ralph-Wiggum methodology](https://awesomeclaude.ai/ralph-wiggum)
 - [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code)
 - [Dev Containers specification](https://containers.dev/)
+- [Secrets reference](SECRETS.md)
